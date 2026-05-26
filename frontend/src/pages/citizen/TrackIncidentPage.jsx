@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { db } from '../../firebase/config';
 import {
   Search, ClipboardList, Clock, CheckCircle2, AlertTriangle,
   Loader2, ChevronDown, ChevronUp, MapPin, Phone, Calendar,
