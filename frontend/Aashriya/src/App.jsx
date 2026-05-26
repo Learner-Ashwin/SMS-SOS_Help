@@ -11,9 +11,9 @@ import AuthLayout from './layouts/AuthLayout';
 import HomePage from './pages/citizen/HomePage';
 import ReportEmergencyPage from './pages/citizen/ReportEmergencyPage';
 // Missing files commented out for now:
-// import NearbyServicesPage from './pages/citizen/NearbyServicesPage';
-// import TrackIncidentPage from './pages/citizen/TrackIncidentPage';
-// import EmergencyTipsPage from './pages/citizen/EmergencyTipsPage';
+import NearbyServicesPage from './pages/citizen/NearbyServicesPage';
+import TrackIncidentPage from './pages/citizen/TrackIncidentPage';
+import EmergencyTipsPage from './pages/citizen/EmergencyTipsPage';
 
 // Dashboard Pages
 import DashboardHomePage from './pages/dashboard/DashboardHomePage';
@@ -58,10 +58,7 @@ export default function App() {
         <Route path="/" element={<CitizenLayout />}>
           <Route index element={<HomePage />} />
           <Route path="report" element={<ReportEmergencyPage />} />
-          {/* <Route path="services" element={<NearbyServicesPage />} />
-          <Route path="track" element={<TrackIncidentPage />} />
-          <Route path="tips" element={<EmergencyTipsPage />} /> 
-          */}
+          <Route path="services" element={<NearbyServicesPage />} />
         </Route>
 
         {/* Dashboard Routes */}
