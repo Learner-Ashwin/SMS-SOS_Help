@@ -55,10 +55,15 @@ export default function App() {
         </Route>
 
         {/* Citizen Routes */}
+        {/* Citizen Routes */}
         <Route path="/" element={<CitizenLayout />}>
           <Route index element={<HomePage />} />
           <Route path="report" element={<ReportEmergencyPage />} />
           <Route path="services" element={<NearbyServicesPage />} />
+          
+          {/* Add these two lines so the other buttons work! */}
+          <Route path="track" element={<TrackIncidentPage />} />
+          <Route path="tips" element={<EmergencyTipsPage />} />
         </Route>
 
         {/* Dashboard Routes */}

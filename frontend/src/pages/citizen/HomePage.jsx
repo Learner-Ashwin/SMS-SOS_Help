@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import {
   AlertTriangle, MapPin, Activity, Phone,
   Flame, Droplets, Heart, Car, ChevronRight,
-  Shield, Wifi, WifiOff, Info, BookOpen, Zap
+  WifiOff, BookOpen
 } from 'lucide-react';
 
 const EMERGENCY_TYPES = [
@@ -200,7 +200,7 @@ export default function HomePage() {
             { label: 'Nearby Services', desc: 'Hospitals, police, fire', icon: MapPin, color: 'var(--accent-primary)', to: '/services' },
             { label: 'Track Incident', desc: 'Follow your report', icon: Activity, color: 'var(--active)', to: '/track' },
             { label: 'Safety Tips', desc: 'Emergency guidelines', icon: BookOpen, color: 'var(--medium)', to: '/tips' },
-          ].map(({ label, desc, icon: Icon, color, to }, i) => (
+          ].map(({ label, desc, icon: Icon, color, to }) => (
             <motion.button
               key={to} whileHover={{ y: -2, scale: 1.01 }} whileTap={{ scale: 0.98 }}
               onClick={() => navigate(to)}
@@ -237,7 +237,7 @@ export default function HomePage() {
           {EMERGENCY_TYPES.map(({ icon: Icon, label, color, bg }) => (
             <motion.button
               key={label} whileTap={{ scale: 0.95 }}
-              onClick={() => navigate(`/report?type=${label.toLowerCase()}`)}
+              onClick={() => navigate(`/ReportEmergencyPage?type=${label.toLowerCase()}`)}
               style={{
                 flexShrink: 0, background: bg, border: `1px solid ${color}40`,
                 borderRadius: 'var(--radius-md)', padding: '0.75rem 1.1rem',
@@ -261,7 +261,7 @@ export default function HomePage() {
           <div style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.14em', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
             NEARBY INCIDENTS
           </div>
-          <button onClick={() => navigate('/track')} style={{
+          <button onClick={() => navigate('/TrackIncidentPage')} style={{
             background: 'transparent', border: 'none', cursor: 'pointer',
             color: 'var(--accent-secondary)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.2rem',
           }}>
