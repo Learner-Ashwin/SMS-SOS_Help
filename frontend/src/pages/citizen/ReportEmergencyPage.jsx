@@ -76,29 +76,25 @@ export default function ReportEmergencyPage() {
   const navigate = useNavigate();
 
   const updateField = (key, val) => setFormData(prev => ({ ...prev, [key]: val }));
-
-  const handleSubmit = async () => {
-    const handleSubmit = async () => {
-  setSubmitting(true);
-
-  const docRef = await addDoc(collection(db, "incidents"), {
-    ...
-  });
-
-  setIncidentId(docRef.id);
-  setSubmitting(false);
-  setSubmitted(true);
-  toast.success('Emergency report submitted successfully!');
+  const handleVoiceCommand = () => {
+  alert("Voice button clicked");
 };
 
-});
+  const handleSubmit = async () => {
+  setSubmitting(true);
 
+  try {
+    const newIncidentId = 'INC-' + Date.now().toString().slice(-6);
 
-    setIncidentId(docRef.id);
-    setSubmitting(false);
+    setIncidentId(newIncidentId);
     setSubmitted(true);
     toast.success('Emergency report submitted successfully!');
-  };
+  } catch (error) {
+    toast.error('Failed to submit report');
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const handleNext = () => {
     if (step === 0 && !formData.type) { toast.error('Please select an incident type'); return; }
@@ -190,8 +186,20 @@ export default function ReportEmergencyPage() {
           {/* STEP 0: Type */}
           {step === 0 && (
             <div>
+              <button
+  onClick={handleVoiceCommand}
+  style={{
+    marginBottom: '1rem',
+    padding: '0.75rem 1rem',
+    borderRadius: 'var(--radius-md)',
+    border: '1px solid var(--border-default)',
+    cursor: 'pointer'
+  }}
+>
+  Voice Test
+</button>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
-                What is the emergency?
+                What is the emergency? TEST
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
                 {INCIDENT_TYPES.map(({ value, label, icon: Icon, color, desc }) => (
