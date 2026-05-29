@@ -1,3 +1,5 @@
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase/config";
 import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -76,10 +78,23 @@ export default function ReportEmergencyPage() {
   const updateField = (key, val) => setFormData(prev => ({ ...prev, [key]: val }));
 
   const handleSubmit = async () => {
-    setSubmitting(true);
-    await new Promise(r => setTimeout(r, 2000));
-    const id = `INC-${Math.floor(Math.random() * 1000 + 2848)}`;
-    setIncidentId(id);
+    const handleSubmit = async () => {
+  setSubmitting(true);
+
+  const docRef = await addDoc(collection(db, "incidents"), {
+    ...
+  });
+
+  setIncidentId(docRef.id);
+  setSubmitting(false);
+  setSubmitted(true);
+  toast.success('Emergency report submitted successfully!');
+};
+
+});
+
+
+    setIncidentId(docRef.id);
     setSubmitting(false);
     setSubmitted(true);
     toast.success('Emergency report submitted successfully!');
