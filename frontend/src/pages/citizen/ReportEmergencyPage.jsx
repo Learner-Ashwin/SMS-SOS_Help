@@ -69,17 +69,66 @@ export default function ReportEmergencyPage() {
     type: '', severity: 'high', description: '', location: '', landmark: '',
     name: '', phone: '', anonymous: false, files: [],
   });
+ 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [incidentId, setIncidentId] = useState('');
-  const fileRef = useRef();
+ 
+const fileRef = useRef();
+  const continueButtonRef = useRef(null);
   const navigate = useNavigate();
-
   const updateField = (key, val) => setFormData(prev => ({ ...prev, [key]: val }));
-  const handleVoiceCommand = () => {
-  alert("Voice button clicked");
-};
+ 
+const handleVoiceCommand = () => {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  if (!SpeechRecognition) {
+    toast.error("Speech recognition not supported");
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  recognition.start();
+  toast.success("Listening...");
+
+  recognition.onresult = (event) => {
+    const command = event.results[0][0].transcript.toLowerCase();
+    console.log("VOICE COMMAND:", command);
+
+    const typeMap = {
+      fire: "fire",
+      medical: "medical",
+      flood: "flood",
+      accident: "accident",
+      crime: "crime",
+      other: "other",
+    };
+
+    const matched = Object.keys(typeMap).find((key) => command.includes(key));
+
+    if (matched) {
+      updateField("type", typeMap[matched]);
+      toast.success(
+        `${matched.charAt(0).toUpperCase() + matched.slice(1)} selected`
+      );
+
+      setTimeout(() => {
+        setStep((s) => s + 1);
+      }, 800);
+    } else {
+      toast.error("Command not recognized");
+    }
+  };
+
+  recognition.onerror = () => {
+    toast.error("Voice recognition failed");
+  };
+};
   const handleSubmit = async () => {
   setSubmitting(true);
 
@@ -96,11 +145,16 @@ export default function ReportEmergencyPage() {
   }
 };
 
-  const handleNext = () => {
-    if (step === 0 && !formData.type) { toast.error('Please select an incident type'); return; }
-    if (step < STEPS.length - 1) setStep(s => s + 1);
-  };
+ const handleNext = (selectedType = formData.type) => {
+  if (step === 0 && !selectedType) {
+    toast.error('Please select an incident type');
+    return;
+  }
 
+  if (step < STEPS.length - 1) {
+    setStep(s => s + 1);
+  }
+};
   if (submitted) {
     return (
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '2rem 1rem', textAlign: 'center' }}>
@@ -500,9 +554,10 @@ export default function ReportEmergencyPage() {
             <ChevronLeft size={16} /> Back
           </button>
         )}
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={step === STEPS.length - 1 ? handleSubmit : handleNext}
+     <motion.button
+  ref={continueButtonRef}
+  whileTap={{ scale: 0.97 }}
+  onClick={step === STEPS.length - 1 ? handleSubmit : handleNext}
           disabled={submitting}
           style={{
             flex: 2, borderRadius: 'var(--radius-md)', padding: '0.85rem',
